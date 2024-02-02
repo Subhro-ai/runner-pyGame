@@ -31,7 +31,7 @@ game_active = True
 sky_surface = pygame.image.load('graphics/Sky.png').convert()
 ground_surface = pygame.image.load('graphics/ground.png').convert()
 BGSPEED = 5
-SKYSPEED = 3
+SKYSPEED = 2
 bgWidth = ground_surface.get_width()
 bgHeight = ground_surface.get_height()
 bg_x = 0
@@ -46,7 +46,10 @@ snail_rect = snail_surface.get_rect(bottomright = (800,300))
 snailSpeed = 6
 
 player_surf = pygame.image.load('graphics/Player/player_walk_1.png').convert_alpha()
+player_surf_jump = pygame.image.load('graphics/Player/jump.png').convert_alpha()
 player_rect = player_surf.get_rect(midbottom = (80,300))
+
+currentState = player_surf
 
 player_stand = pygame.image.load('graphics/Player/player_stand.png').convert_alpha()
 player_stand = pygame.transform.rotozoom(player_stand, 0, 2)
@@ -69,6 +72,7 @@ while True:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE and player_rect.bottom == 300:
                         player_gravity = -20
+                        currentState = player_surf_jump
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if player_rect.collidepoint(event.pos) and player_rect.bottom == 300:
@@ -105,10 +109,12 @@ while True:
 
 
         #player
-        screen.blit(player_surf,player_rect)
+        screen.blit(currentState,player_rect)
         player_gravity += 1
         player_rect.bottom += player_gravity
-        if player_rect.bottom >= 300: player_rect.bottom = 300
+        if player_rect.bottom >= 300: 
+            player_rect.bottom = 300
+            currentState = player_surf
 
         if(player_rect.colliderect(snail_rect)):
             game_active = False
