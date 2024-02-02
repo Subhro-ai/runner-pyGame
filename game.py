@@ -30,6 +30,14 @@ game_active = True
 
 sky_surface = pygame.image.load('graphics/Sky.png').convert()
 ground_surface = pygame.image.load('graphics/ground.png').convert()
+BGSPEED = 5
+SKYSPEED = 3
+bgWidth = ground_surface.get_width()
+bgHeight = ground_surface.get_height()
+bg_x = 0
+sky_x = 0
+skyWidth = sky_surface.get_width()
+skyHeight = sky_surface.get_height()
 
 
 
@@ -73,9 +81,18 @@ while True:
                 start_time = pygame.time.get_ticks()
                 
             
-    if game_active:        
-        screen.blit(sky_surface,(0,0))
-        screen.blit(ground_surface,(0,300))
+    if game_active:
+        bg_x -= BGSPEED 
+        sky_x -= SKYSPEED
+
+        if (bg_x <= -bgWidth):
+            bg_x = 0     
+        if (sky_x <= -skyWidth):
+            sky_x = 0
+        screen.blit(sky_surface,(sky_x,0))
+        screen.blit(sky_surface,(sky_x + skyWidth,0))
+        screen.blit(ground_surface,(bg_x,300))
+        screen.blit(ground_surface,(bg_x + bgWidth,300))
         # pygame.draw.rect(screen, '#c0e8ec', score_rect)
         # pygame.draw.rect(screen, '#c0e8ec', score_rect, 10)
         # screen.blit(text_surface, text_rect)
