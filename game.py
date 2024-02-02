@@ -53,7 +53,9 @@ player_surf_jump = pygame.image.load('graphics/Player/jump.png').convert_alpha()
 player_rect = player_surf.get_rect(midbottom = (80,300))
 
 currentState = player_surf
+snailState = snail_surface1
 currentWalk = False
+snailWalk = False
 
 player_stand = pygame.image.load('graphics/Player/player_stand.png').convert_alpha()
 player_stand = pygame.transform.rotozoom(player_stand, 0, 2)
@@ -102,14 +104,14 @@ while True:
         screen.blit(sky_surface,(sky_x + skyWidth,0))
         screen.blit(ground_surface,(bg_x,300))
         screen.blit(ground_surface,(bg_x + bgWidth,300))
+
+        if snailWalk:
+            snailState = snail_surface1
+        else:
+            snailState = snail_surface2
         
         display_score()
-        if evenFrame:
-            screen.blit(snail_surface1,snail_rect)
-            evenFrame = not evenFrame
-        else:
-            screen.blit(snail_surface2,snail_rect)
-            evenFrame = not evenFrame
+        screen.blit(snailState,snail_rect)
         if snail_rect.right < 0: 
             snail_rect.right = 800
             snailSpeed = randomiseSpeed(snailSpeed)
@@ -124,6 +126,7 @@ while True:
             player_rect.bottom = 300
             if counter % 7 == 0:
                 currentWalk = not currentWalk
+                snailWalk = not snailWalk
             if (currentWalk):
                 currentState = player_surf_walk1
             else:
