@@ -39,17 +39,21 @@ sky_x = 0
 skyWidth = sky_surface.get_width()
 skyHeight = sky_surface.get_height()
 
+evenFrame = True
 
-
-snail_surface = pygame.image.load('graphics/snail/snail1.png').convert_alpha()
-snail_rect = snail_surface.get_rect(bottomright = (800,300))
+snail_surface1 = pygame.image.load('graphics/snail/snail1.png').convert_alpha()
+snail_surface2 = pygame.image.load('graphics/snail/snail2.png').convert_alpha()
+snail_rect = snail_surface1.get_rect(bottomright = (800,300))
 snailSpeed = 6
 
 player_surf = pygame.image.load('graphics/Player/player_walk_1.png').convert_alpha()
+player_surf_walk1 = pygame.image.load('graphics/Player/player_walk_1.png').convert_alpha()
+player_surf_walk2 = pygame.image.load('graphics/Player/player_walk_2.png').convert_alpha()
 player_surf_jump = pygame.image.load('graphics/Player/jump.png').convert_alpha()
 player_rect = player_surf.get_rect(midbottom = (80,300))
 
 currentState = player_surf
+currentWalk = False
 
 player_stand = pygame.image.load('graphics/Player/player_stand.png').convert_alpha()
 player_stand = pygame.transform.rotozoom(player_stand, 0, 2)
@@ -61,6 +65,7 @@ def randomiseSpeed(x):
     x = random.randint(6,20)
     return x
 
+counter = 0
 
 player_gravity = 0
 while True:
@@ -97,11 +102,14 @@ while True:
         screen.blit(sky_surface,(sky_x + skyWidth,0))
         screen.blit(ground_surface,(bg_x,300))
         screen.blit(ground_surface,(bg_x + bgWidth,300))
-        # pygame.draw.rect(screen, '#c0e8ec', score_rect)
-        # pygame.draw.rect(screen, '#c0e8ec', score_rect, 10)
-        # screen.blit(text_surface, text_rect)
+        
         display_score()
-        screen.blit(snail_surface,snail_rect)
+        if evenFrame:
+            screen.blit(snail_surface1,snail_rect)
+            evenFrame = not evenFrame
+        else:
+            screen.blit(snail_surface2,snail_rect)
+            evenFrame = not evenFrame
         if snail_rect.right < 0: 
             snail_rect.right = 800
             snailSpeed = randomiseSpeed(snailSpeed)
@@ -114,11 +122,18 @@ while True:
         player_rect.bottom += player_gravity
         if player_rect.bottom >= 300: 
             player_rect.bottom = 300
-            currentState = player_surf
+            if counter % 7 == 0:
+                currentWalk = not currentWalk
+            if (currentWalk):
+                currentState = player_surf_walk1
+            else:
+                currentState = player_surf_walk2
 
         if(player_rect.colliderect(snail_rect)):
             game_active = False
         
+        counter += 1
+
         draw_fps()
 
     else:
