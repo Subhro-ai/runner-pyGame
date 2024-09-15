@@ -67,6 +67,7 @@ def randomiseSpeed(x):
     x = random.randint(6,20)
     return x
 
+
 counter = 0
 
 player_gravity = 0
