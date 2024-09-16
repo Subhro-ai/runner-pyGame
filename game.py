@@ -13,7 +13,6 @@ def draw_fps():
 
     # Render the text
     fps_text = test_font.render(f"FPS: {fps}", True, (64,64,64))
-
     # Draw the text on the screen
     screen.blit(fps_text, (10, 10))
         
